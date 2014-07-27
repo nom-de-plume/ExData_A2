@@ -1,5 +1,5 @@
-# Exploratory Data Analysis - Course Project 2 - plot1
-#   This is my work for the second assignment (plot 1)
+# Exploratory Data Analysis - Course Project 2 - plot3
+#   This is my work for the second assignment (plot 3)
 
 #Should move loading data to another function/script as it is common to all plots
 
@@ -36,21 +36,24 @@ if (doLoadData) {
 
 }
 
-#Get the total emissions
-total_emissions <- tapply(NEI$Emissions, NEI$year, sum)
+#Get the maryland records only
+NEIMaryland <- NEI[NEI$fips == '24510',]
 
-V1 <- as.numeric(names(total_emissions))
-V2 <-as.vector(total_emissions)
+#Get the total emissions
+total_emissions_maryland <- tapply(NEIMaryland$Emissions, NEIMaryland$year, sum)
+
+V1 <- as.numeric(names(total_emissions_maryland))
+V2 <-as.vector(total_emissions_maryland)
 
 #Do the actual histogram plot and export to png
-png(file = 'plot1.png', 
+png(file = 'plot2.png', 
 		width = 480, 
 		height = 480,
 		bg = 'transparent')
 
 plot(V1, V2, 
         type='b',
-		ylab = 'Total Emissions (PM_{2.5})',
+		ylab = 'Total Emissions (PM_{2.5}) (Maryland)',
         xlab = 'Year')
 
 dev.off()

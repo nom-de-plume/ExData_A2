@@ -53,7 +53,7 @@ png(file = 'plot2.png',
 
 plot(V1, V2, 
         type='b',
-		ylab = 'Total Emissions (PM_{2.5}) (Maryland)',
+		ylab = 'Total Emissions (PM_{2.5}) (Baltimore City)',
         xlab = 'Year')
 
 dev.off()
