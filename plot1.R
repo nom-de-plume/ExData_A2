@@ -50,7 +50,7 @@ png(file = 'plot1.png',
 
 plot(V1, V2, 
         type='b',
-		ylab = 'Total Emissions (PM_{2.5})',
+	ylab = 'Total Emissions (PM_{2.5})',
         xlab = 'Year')
 
 dev.off()

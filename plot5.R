@@ -1,5 +1,5 @@
-# Exploratory Data Analysis - Course Project 2 - plot3
-#   This is my work for the second assignment (plot 3)
+# Exploratory Data Analysis - Course Project 2 - plot5
+#   This is my work for the second assignment (plot 5)
 
 #Should move loading data to another function/script as it is common to all plots
 
@@ -34,32 +34,31 @@ if (doLoadData) {
 	## This first line will likely take a few seconds. Be patient! 
 	NEI <- readRDS(neiFileName)
 	SCC <- readRDS(sccFileName)
+	
+	#Merging datasets so we can work on getting the correct data out
+	NEISCC <- merge(NEI, SCC, by='SCC', all.x=TRUE, all.y=FALSE)
 
 }
 
 #Get the Maryland records only
-NEIMaryland <- NEI[NEI$fips == '24510',]
+NEISCCMaryland <- NEISCC[NEISCC$fips == '24510',]
+
+#I assume that for 'motor' emissions, the dataset would contain the word 'motor'
+#  hence, we take only the subset with that data
+NEISCCMarylandMotorFactors <- subset(NEISCCMaryland, grepl('(?i)motor', NEISCCMaryland$Short.Name))
 
 #Get sum total of each type of pollution
-#NEIMarylandFactors <- ddply(NEIMaryland, .(year, type), summarize, EmissionsTotal = sum(Emissions))
+#NEISCCMarylandMotorFactorsTotal <- ddply(NEISCCMarylandMotorFactors, .(year), summarize, EmissionsTotal = sum(Emissions))
 
-#Get the emissions
-
-png(file = 'plot3.png', 
+png(file = 'plot5.png', 
 		width = 480, 
 		height = 480,
 		bg = 'transparent')
-		
-#g <- ggplot(NEIMarylandFactors, aes(year, EmissionsTotal))
-g <- ggplot(NEIMaryland, aes(year, Emissions))
 
-#p <- g + geom_point() + facet_grid(. ~ type) + geom_smooth(method = "lm") + coord_cartesian(ylim = c(-1, 2500))
-#p <- g + geom_point() + facet_grid(. ~ type) + geom_smooth(method = "lm",se=FALSE) + coord_cartesian(ylim = c(-1, 100))
-#p <- g + geom_point() + facet_grid(. ~ type)  + geom_line()
-#p <- g + geom_point() + facet_grid(. ~ type)  + geom_boxplot()
-p <- g + geom_point() + facet_grid(. ~ type) + geom_smooth(method = "lm") + coord_cartesian(ylim = c(-1, 400)) + labs(title = "Emissions") + labs(x = "Year") + labs(y = "Emissions")
+g <- ggplot(NEISCCMarylandMotorFactors, aes(year, Emissions))
+
+p <- g + geom_point() + geom_smooth(method = "lm") + coord_cartesian(ylim = c(-1, 20)) + labs(title = "Motor Emissions (Baltimore City)") + labs(x = "Year") + labs(y = "Emissions")
 
 print(p)
 
-
-dev.off();
+dev.off()
